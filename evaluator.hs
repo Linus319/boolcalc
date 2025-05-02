@@ -52,8 +52,6 @@ evalE4 (BaseE e) env = eval e env
 evalE4 (BoolB b) env = evalB b env
 
 evalB :: B -> Env -> Result
-evalB TrueB _ = Valid True
-evalB FalseB _ = Valid False
 evalB (VarB x) env = 
     case lookup x env of
         Just b -> Valid b

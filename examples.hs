@@ -7,14 +7,6 @@ var2 = VarB "b"
 var3 = VarB "c"
 var4 = VarB "d"
 
--- (true)
-b1 = TrueB
-
--- a+(false)
-e1 = OrE
-    (PlainE2 (PlainE3 (PlainE4 (BoolB var1))))
-    (PlainE3 (PlainE4 (BoolB FalseB)))
-
 -- bc==b*c
 e2 = EqE
     (PlainE1 (PlainE2 (AndE (PlainE3 (PlainE4 (BoolB var2))) (PlainE4 (BoolB var3)))))
