@@ -11,8 +11,7 @@ parseVar = do
 
 parseBoolB :: Parser E4
 parseBoolB = do
-    var <- parseVar
-    return (BoolB var)
+    BoolB <$> parseVar
 
 parseParen :: Parser E
 parseParen = do
@@ -24,8 +23,7 @@ parseParen = do
 parseNot :: Parser E3
 parseNot = do
     char '!'
-    e3 <- parseE3
-    return (NotE e3)
+    NotE <$> parseE3
 
 parseAnd :: Parser E2
 parseAnd = do
@@ -33,8 +31,7 @@ parseAnd = do
     spaces
     char '*'
     spaces
-    e3 <- parseE3
-    return (AndE e2 e3)
+    AndE e2 <$> parseE3
 
 parseOr :: Parser E1
 parseOr = do
@@ -42,8 +39,7 @@ parseOr = do
     spaces
     char '+'
     spaces
-    e2 <- parseE2
-    return (OrE e1 e2)
+    OrE e1 <$> parseE2
 
 parseEq :: Parser E
 parseEq = do
@@ -51,8 +47,7 @@ parseEq = do
     spaces
     string "=="
     spaces
-    e2 <- parseExpr
-    return (EqE e1 e2)
+    EqE e1 <$> parseExpr
 
 parseNEq :: Parser E
 parseNEq = do
@@ -60,8 +55,7 @@ parseNEq = do
     spaces
     string "!="
     spaces
-    e2 <- parseExpr
-    return (NEqE e1 e2)
+    NEqE e1 <$> parseExpr
 
 parseE4 :: Parser E4
 parseE4 = (BaseE <$> parseParen) <|> parseBoolB

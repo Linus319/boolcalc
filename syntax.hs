@@ -1,6 +1,6 @@
 {-
 S -> E						            (program) 
-E -> (E) | E1			(base expression) 
+E -> (E) | EqE E E | NEqE E E | E1		(base expression) 
 E1 -> E1 + E2 | E2				        (or expression) 
 E2 -> E2 * E3 | E2 E3 | E3			    (and expression) 
 E3 -> !E3 | E4					        (not expression) 
