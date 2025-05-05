@@ -1,6 +1,6 @@
 {-
 S -> E						            (program) 
-E -> (E) | E == E | E != E | E1			(base expression) 
+E -> (E) | E1			(base expression) 
 E1 -> E1 + E2 | E2				        (or expression) 
 E2 -> E2 * E3 | E2 E3 | E3			    (and expression) 
 E3 -> !E3 | E4					        (not expression) 
@@ -9,16 +9,17 @@ B -> (a-z)			                    (boolean value)
 -}
 
 module Syntax where
-data B = VarB String deriving (Eq, Ord)
-data E = Paren E | EqE E E | NEqE E E | PlainE1 E1
+import Data.List
+
+newtype B = VarB String deriving (Eq, Ord)
+data E = Paren E | PlainE1 E1 | EqE E E | NEqE E E
 data E1 = OrE E1 E2 | PlainE2 E2
 data E2 = MulE E2 E3 | AndE E2 E3 | PlainE3 E3
 data E3 = NotE E3 | PlainE4 E4
 data E4 = BaseE E | BoolB B
 
 newtype Program = Program E
--- type Env = [(String, Bool)]
-data Result = ValidTable [[Bool]] | Invalid String
+data Result = ValidTable [String] [[Bool]] | Invalid String
 
 instance Show E where
     show (Paren e) = "(" ++ show e ++ ")"
@@ -50,5 +51,9 @@ instance Show Program where
     show (Program e) = show e
 
 instance Show Result where
-    show (ValidTable b) = show "Valid: " ++ show b
-    show (Invalid msg) = show "Invalid: " ++ msg
+    show (ValidTable header rows) = 
+        let formatRow row = intercalate "\t" (map show row)
+            formattedHeader = intercalate "\t" header
+            formattedRows = unlines (map formatRow rows)
+        in formattedHeader ++ "\n" ++ formattedRows
+    show (Invalid msg) = "Invalid: " ++ msg
