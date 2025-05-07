@@ -1,8 +1,8 @@
 module Parser (parseProgram) where
 
 import Syntax
-import Text.Parsec
-import Text.Parsec.String (Parser)
+import Text.Parsec -- char, string, spaces, <|>, do
+import Text.Parsec.String (Parser) -- Parser type
 
 parseVar :: Parser B
 parseVar = do
