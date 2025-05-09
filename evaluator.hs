@@ -6,8 +6,6 @@ import Control.Monad
 
 getVars :: E -> [String]
 getVars (Paren e) = getVars e
-getVars (EqE e1 e2) = getVars e1 ++ getVars e2
-getVars (NEqE e1 e2) = getVars e1 ++ getVars e2
 getVars (PlainE1 e1) = getVarsE1 e1
 
 getVarsE1 :: E1 -> [String]
@@ -49,14 +47,6 @@ evalWithVars e vars combo =
 
 eval :: E -> [(String, Bool)] -> Result
 eval (Paren e) env = eval e env
-eval (EqE e1 e2) env = 
-    case (eval e1 env, eval e2 env) of 
-        (ValidTable _ [[v1]], ValidTable _ [[v2]]) -> ValidTable [] [[v1 == v2]]
-        _ -> Invalid "Mismatched truth table dimnsions"
-eval (NEqE e1 e2) env = 
-    case (eval e1 env, eval e2 env) of
-        (ValidTable _ [[v1]], ValidTable _ [[v2]]) -> ValidTable [] [[v1 /= v2]]
-        _ -> Invalid "Mismatched truth table dimensions"
 eval (PlainE1 e1) env = evalE1 e1 env
 
 evalE1 :: E1 -> [(String, Bool)] -> Result

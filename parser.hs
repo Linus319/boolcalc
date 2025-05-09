@@ -66,30 +66,10 @@ parseParen = do
     char ')'
     return (Paren (PlainE1 e))
 
--- works, exept it allows examples like "x == y == z"
-parseEq :: Parser E
-parseEq = do
-    e1 <- parseE1
-    spaces
-    string "=="
-    spaces
-    e2 <- parseE1
-    return (EqE (PlainE1 e1) (PlainE1 e2))
-
--- works except it allows examples like "x != y != z"
-parseNEq :: Parser E
-parseNEq = do
-    e1 <- parseE1
-    spaces
-    try (string "!=")
-    spaces
-    e2 <- parseE1
-    return (NEqE (PlainE1 e1) (PlainE1 e2))
-
 parseExpr :: Parser E
 parseExpr = do
     spaces
-    expr <- try parseEq <|> try parseNEq <|> (PlainE1 <$> parseE1)
+    expr <- (PlainE1 <$> parseE1)
     spaces
     eof
     return expr

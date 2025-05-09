@@ -1,6 +1,6 @@
 {-
 S -> E						            (program) 
-E -> (E) | EqE E E | NEqE E E | E1		(base expression) 
+E -> (E) | E1		                    (base expression) 
 E1 -> E1 + E2 | E2				        (or expression) 
 E2 -> E2 * E3 | E2 E3 | E3			    (and expression) 
 E3 -> !E3 | E4					        (not expression) 
@@ -12,7 +12,7 @@ module Syntax where
 import Data.List
 
 newtype B = VarB String deriving (Eq, Ord)
-data E = Paren E | PlainE1 E1 | EqE E E | NEqE E E
+data E = Paren E | PlainE1 E1
 data E1 = OrE E1 E2 | PlainE2 E2
 data E2 = MulE E2 E3 | AndE E2 E3 | PlainE3 E3
 data E3 = NotE E3 | PlainE4 E4
@@ -23,8 +23,6 @@ data Result = ValidTable [String] [[Bool]] | Invalid String
 
 instance Show E where
     show (Paren e) = "(" ++ show e ++ ")"
-    show (EqE e1 e2) = show e1 ++ "==" ++ show e2
-    show (NEqE e1 e2) = show e1 ++ "!=" ++ show e2
     show (PlainE1 e1) = show e1
 
 instance Show E1 where
