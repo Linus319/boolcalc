@@ -27,7 +27,7 @@ getVarsE3 (PlainE4 e4) = case e4 of
 
 evalProgram :: Program -> Result
 evalProgram (Program e) = 
-    let vars = nub (getVars e)
+    let vars = nub (getVars e) -- nub to remove duplicates
         combinations = replicateM (length vars) [True, False]
         evalCombination combo = 
             let env = zip vars combo
