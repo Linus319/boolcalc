@@ -1,28 +1,23 @@
 module Parser (parseProgram) where
 
 import Syntax
-import Text.Parsec -- char, string, spaces, <|>, do
-import Text.Parsec.String (Parser) -- Parser type
-import Debug.Trace
+import Text.Parsec 
+import Text.Parsec.String (Parser)
 
--- confirmed good
 parseVar :: Parser B
 parseVar = do
     x <- oneOf ['a'..'z']
     return (VarB [x])
 
--- confirmed good
 parseBoolB :: Parser E4
 parseBoolB = do
     BoolB <$> parseVar
 
--- confirmed good
 parseNot :: Parser E3
 parseNot = do
     char '!'
     NotE <$> parseE3
 
--- confirmed good
 parseAnd :: Parser E2
 parseAnd = do
     e3 <- parseE3
@@ -35,7 +30,6 @@ parseAnd = do
         e3 <- parseE3
         rest (AndE e2 e3)) <|> return e2
 
--- confirmed good
 parseOr :: Parser E1
 parseOr = do
     spaces
@@ -49,7 +43,6 @@ parseOr = do
         e2 <- parseE2
         rest (OrE e1 e2)) <|> return e1
 
--- confirmed good
 parseE4 :: Parser E4
 parseE4 = do
     spaces
@@ -57,19 +50,15 @@ parseE4 = do
     spaces
     return e4
 
--- confirmed good
 parseE3 :: Parser E3
 parseE3 = parseNot <|> (PlainE4 <$> parseE4)
 
--- confirmed good
 parseE2 :: Parser E2
 parseE2 = parseAnd <|> (PlainE3 <$> parseE3)
 
--- confirmed good
 parseE1 :: Parser E1
 parseE1 = parseOr <|> (PlainE2 <$> parseE2)
 
--- confirmed good
 parseParen :: Parser E
 parseParen = do
     char '('
@@ -100,7 +89,7 @@ parseNEq = do
 parseExpr :: Parser E
 parseExpr = do
     spaces
-    expr <- parseEq <|> parseNEq <|> (PlainE1 <$> parseE1)
+    expr <- try parseEq <|> try parseNEq <|> (PlainE1 <$> parseE1)
     spaces
     eof
     return expr
