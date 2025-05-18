@@ -15,6 +15,15 @@ parseAndEvaluate input =
             putStrLn $ "Truth table for: " ++ input
             putStrLn $ show result
 
+generateTruthTable :: String -> String
+generateTruthTable expr = 
+    case parse parseProgram "" expr of
+        Left err -> "Error: " ++ show err
+        Right program -> do
+            let result = evalProgram program
+            "Truth table for: " ++ expr
+            show result
+
 main :: IO ()
 main = do
     putStrLn "Enter a boolean expression (or type 'exit' to quit):"
